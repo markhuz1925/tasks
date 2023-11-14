@@ -13,12 +13,17 @@ export default function DashboardNavbar() {
           <Logo />
         </div>
         <Button
+          variant="primary"
           size="sm"
           className="rounded-sm hidden md:block h-auto py-1.5 px-2"
         >
           Create
         </Button>
-        <Button size="sm" className="rounded-sm block md:hidden">
+        <Button
+          variant="primary"
+          size="sm"
+          className="rounded-sm block md:hidden"
+        >
           <PlusIcon className="w-4 h-4" />
         </Button>
       </div>
