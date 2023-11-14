@@ -1,3 +1,4 @@
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export default function PlatformLayout({
@@ -5,5 +6,9 @@ export default function PlatformLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      <TooltipProvider>{children}</TooltipProvider>
+    </ClerkProvider>
+  );
 }
