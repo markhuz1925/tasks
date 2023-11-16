@@ -3,7 +3,7 @@
 import { defaultImages } from "@/constants/images";
 import { unsplash } from "@/lib/unsplash";
 import { cn } from "@/lib/utils";
-import { Loader2Icon } from "lucide-react";
+import { CheckCircleIcon, Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -75,6 +75,11 @@ export function FormPicker({ id, error }: Props) {
               className="object-cover rounded-sm"
               fill
             />
+            {selectedImageId === image.id && (
+              <div className="absolute inset-y-0 flex items-center justify-center w-full h-full bg-black/50">
+                <CheckCircleIcon className="w-4 h-4 text-white" />
+              </div>
+            )}
             <Link
               href={image.links.html}
               target="_blank"
