@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { FormErrors } from "./form-errors";
 
 interface Props {
   id: string;
@@ -69,6 +70,14 @@ export function FormPicker({ id, error }: Props) {
               setSelectedImageId(image.id);
             }}
           >
+            <input
+              type="radio"
+              id={id}
+              name={id}
+              className="hidden"
+              checked={selectedImageId === image.id}
+              disabled={pending}
+            />
             <Image
               src={image.urls.thumb}
               alt="Unsplash image"
@@ -90,6 +99,7 @@ export function FormPicker({ id, error }: Props) {
           </div>
         ))}
       </div>
+      <FormErrors id="image" errors={error} />
     </div>
   );
 }
