@@ -79,7 +79,9 @@ export function FormPopover({ children, side, align, sideOffset }: Props) {
               errors={fieldErrors}
             />
           </div>
-          <FormSubmit className="w-full">Create</FormSubmit>
+          <FormSubmit variant="primary" className="w-full">
+            Create
+          </FormSubmit>
         </form>
       </PopoverContent>
     </Popover>
