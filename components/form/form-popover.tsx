@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { FormInput } from "./form-input";
 import { FormPicker } from "./form-picker";
 import { FormSubmit } from "./form-submit";
+import { ElementRef, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: React.ReactNode;
@@ -23,17 +25,19 @@ interface Props {
 }
 
 export function FormPopover({ children, side, align, sideOffset }: Props) {
+  const closeRef = useRef<ElementRef<"button">>(null);
+  const router = useRouter();
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
-      console.log({ data });
       toast(
         <div className="flex items-center gap-x-2">
           <CheckCircle2 className="w-4 h-4 text-green-500" /> Board created
         </div>
       );
+      closeRef.current?.click();
+      router.push(`/board/${data.id}`);
     },
     onError: (error) => {
-      console.log({ error });
       toast(
         <div className="flex items-center gap-x-2">
           <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
@@ -61,7 +65,7 @@ export function FormPopover({ children, side, align, sideOffset }: Props) {
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Create board
         </div>
-        <PopoverClose asChild>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             variant="ghost"
             className="w-auto h-auto p-2 absolute top-2 right-2 text-neutral-600"
