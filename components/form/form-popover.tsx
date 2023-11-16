@@ -12,6 +12,7 @@ import { useAction } from "@/hooks/use-action";
 import { AlertCircleIcon, CheckCircle2, XIcon } from "lucide-react";
 import { toast } from "sonner";
 import { FormInput } from "./form-input";
+import { FormPicker } from "./form-picker";
 import { FormSubmit } from "./form-submit";
 
 interface Props {
@@ -68,6 +69,7 @@ export function FormPopover({ children, side, align, sideOffset }: Props) {
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
+            <FormPicker id="image" error={fieldErrors} />
             <FormInput
               id="title"
               label="Board title"
