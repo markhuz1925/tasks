@@ -6,9 +6,5 @@ export default function PlatformLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <ClerkProvider>
-      <TooltipProvider>{children}</TooltipProvider>
-    </ClerkProvider>
-  );
+  return <ClerkProvider>{children}</ClerkProvider>;
 }

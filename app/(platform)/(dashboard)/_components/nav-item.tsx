@@ -7,11 +7,6 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
   ActivityIcon,
@@ -89,16 +84,9 @@ export default function NavItem({
               className="rounded-sm object-cover"
             />
           </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="font-medium text-sm truncate max-w-[180px]">
-                {organization?.name}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{organization?.name}</p>
-            </TooltipContent>
-          </Tooltip>
+          <span className="font-medium text-sm truncate max-w-[180px]">
+            {organization?.name}
+          </span>
         </div>
       </AccordionTrigger>
       <AccordionContent className="pt-1 text-neutral-700">
