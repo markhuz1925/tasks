@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { PlusIcon } from "lucide-react";
-import { useLocalStorage } from "usehooks-ts";
-import { useOrganization, useOrganizationList } from "@clerk/nextjs";
+import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Accordion, AccordionItem } from "@/components/ui/accordion";
+import { useOrganization, useOrganizationList } from "@clerk/nextjs";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
+import { useLocalStorage } from "usehooks-ts";
 import NavItem, { Organization } from "./nav-item";
 
 export default function DashboardSidebar({

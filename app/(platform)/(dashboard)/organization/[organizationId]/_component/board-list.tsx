@@ -1,4 +1,4 @@
-import Hint from "@/components/hint";
+import { Hint } from "@/components/hint";
 import { HelpCircleIcon, User2Icon } from "lucide-react";
 
 export default function BoardList() {

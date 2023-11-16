@@ -1,6 +1,6 @@
 import { XCircleIcon } from "lucide-react";
 
-export default function FormErrors({
+export function FormErrors({
   id,
   errors,
 }: {

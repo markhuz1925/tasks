@@ -12,7 +12,7 @@ interface Props {
   sideOffset?: number;
 }
 
-export default function Hint({
+export function Hint({
   children,
   desription,
   side = "bottom",

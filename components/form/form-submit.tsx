@@ -17,12 +17,7 @@ interface Props {
     | "link";
 }
 
-export default function FormSubmit({
-  children,
-  disabled,
-  className,
-  variant,
-}: Props) {
+export function FormSubmit({ children, disabled, className, variant }: Props) {
   const { pending } = useFormStatus();
 
   return (
