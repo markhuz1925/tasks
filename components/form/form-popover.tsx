@@ -44,7 +44,9 @@ export function FormPopover({ children, side, align, sideOffset }: Props) {
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
-    execute({ title });
+    const image = formData.get("image") as string;
+
+    execute({ title, image });
   };
 
   return (
