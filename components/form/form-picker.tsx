@@ -77,6 +77,7 @@ export function FormPicker({ id, error }: Props) {
               className="hidden"
               checked={selectedImageId === image.id}
               disabled={pending}
+              value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
             />
             <Image
               src={image.urls.thumb}
