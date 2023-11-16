@@ -1,10 +1,15 @@
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 
 export default function PlatformLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      <Toaster />
+      {children}
+    </ClerkProvider>
+  );
 }
