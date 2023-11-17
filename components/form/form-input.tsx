@@ -39,7 +39,7 @@ export const FormInput = forwardRef<HTMLInputElement, Props>(
     const { pending } = useFormStatus();
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         <div className="space-y-1">
           {label ? (
             <Label
