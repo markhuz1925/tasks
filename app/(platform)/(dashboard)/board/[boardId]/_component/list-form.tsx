@@ -1,16 +1,20 @@
 "use client";
 
-import { PlusIcon, XIcon } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2, PlusIcon, XIcon } from "lucide-react";
 import { ListWrapper } from "./list-wrapper";
 import { ElementRef, useRef, useState } from "react";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
 import { FormInput } from "@/components/form/form-input";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FormSubmit } from "@/components/form/form-submit";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
+import { createList } from "@/actions/create-list";
+import { toast } from "sonner";
 
 export function ListForm() {
   const params = useParams();
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef<ElementRef<"form">>(null);
   const inputRef = useRef<ElementRef<"input">>(null);
@@ -26,6 +30,26 @@ export function ListForm() {
     setIsEditing(false);
   };
 
+  const { execute, fieldErrors } = useAction(createList, {
+    onSuccess: (data) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          {`List ${data.title} created!`}
+        </div>
+      );
+      disableEditing();
+      router.refresh();
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
+
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") disableEditing();
   };
@@ -33,16 +57,27 @@ export function ListForm() {
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const boardId = formData.get("boardId") as string;
+
+    if (!title) return;
+
+    execute({ title, boardId });
+  };
+
   if (isEditing) {
     return (
       <ListWrapper>
         <form
           ref={formRef}
+          action={onSubmit}
           className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
         >
           <FormInput
             ref={inputRef}
             id="title"
+            errors={fieldErrors}
             className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition"
             placeholder="Enter list title..."
           />
