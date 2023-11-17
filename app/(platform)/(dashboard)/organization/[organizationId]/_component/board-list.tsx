@@ -1,5 +1,6 @@
 import { FormPopover } from "@/components/form/form-popover";
 import { Hint } from "@/components/hint";
+import { Skeleton } from "@/components/ui/skeleton";
 import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs";
 import { HelpCircleIcon, User2Icon } from "lucide-react";
@@ -59,3 +60,18 @@ export default async function BoardList() {
     </div>
   );
 }
+
+BoardList.Skeleton = function BoardListSkeleton() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+      <Skeleton className="aspect-video w-full h-full p-2" />
+    </div>
+  );
+};
