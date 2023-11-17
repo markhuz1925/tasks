@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteBoard } from "@/actions/delete-board";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -7,11 +8,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MoreHorizontalIcon, XIcon } from "lucide-react";
-import { ElementRef, useRef } from "react";
+import { useAction } from "@/hooks/use-action";
+import { AlertCircleIcon, MoreHorizontalIcon, XIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export function BoardOptions({ id }: { id: string }) {
-  const closeRef = useRef<ElementRef<"button">>(null);
+  const { execute, isLoading } = useAction(deleteBoard, {
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
+
+  const onDelete = () => {
+    execute({ id });
+  };
 
   return (
     <Popover>
@@ -33,7 +47,8 @@ export function BoardOptions({ id }: { id: string }) {
           </Button>
         </PopoverClose>
         <Button
-          onClick={() => {}}
+          onClick={onDelete}
+          disabled={isLoading}
           variant="ghost"
           className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-500"
         >
