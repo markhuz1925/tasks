@@ -29,6 +29,10 @@ export function BoardTitleForm({ data }: { data: Board }) {
     console.table({ title });
   };
 
+  const onBlur = () => {
+    formRef.current?.requestSubmit();
+  };
+
   if (isEditing) {
     return (
       <form
@@ -40,6 +44,7 @@ export function BoardTitleForm({ data }: { data: Board }) {
           id="title"
           ref={inputRef}
           defaultValue={data.title}
+          onBlur={onBlur}
           className="text-lg font-bold px-[7px] py-1 h-7 w-full bg-transparent border-none"
         />
       </form>
