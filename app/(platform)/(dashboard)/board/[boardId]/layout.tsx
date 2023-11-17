@@ -2,7 +2,7 @@ import prisma from "@/prisma/client";
 import { auth } from "@clerk/nextjs";
 import { startCase } from "lodash";
 import { notFound, redirect } from "next/navigation";
-import BoardNavbar from "./_component/board-navbar";
+import { BoardNavbar } from "./_component/board-navbar";
 
 export async function generateMetadata({
   params,
@@ -52,7 +52,7 @@ export default async function BoardIdLayout({
       style={{ backgroundImage: `url(${board.imageFullUrl})` }}
     >
       <div className="absolute inset-0 bg-black/10" />
-      <BoardNavbar id={params.boardId} />
+      <BoardNavbar data={board} />
       <main className="relative pt-28 h-full">{children}</main>
     </div>
   );
