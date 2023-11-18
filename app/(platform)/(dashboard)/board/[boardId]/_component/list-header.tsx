@@ -10,7 +10,13 @@ import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
 import { ListOptions } from "./list-options";
 
-export function ListHeader({ data }: { data: List }) {
+export function ListHeader({
+  data,
+  onAddCard,
+}: {
+  data: List;
+  onAddCard: () => void;
+}) {
   const [title, setTitle] = useState(data.title);
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef<ElementRef<"form">>(null);
@@ -92,7 +98,7 @@ export function ListHeader({ data }: { data: List }) {
           {title}
         </div>
       )}
-      <ListOptions onAddCard={() => {}} data={data} />
+      <ListOptions onAddCard={onAddCard} data={data} />
     </div>
   );
 }
