@@ -22,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAction } from "@/hooks/use-action";
 import { deleteList } from "@/actions/delete-list";
 import { toast } from "sonner";
+import { ElementRef, useRef } from "react";
 
 export function ListOptions({
   data,
@@ -30,6 +31,8 @@ export function ListOptions({
   data: List;
   onAddCard: () => void;
 }) {
+  const closeRef = useRef<ElementRef<"button">>(null);
+
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess: (data) => {
       toast(
@@ -38,6 +41,7 @@ export function ListOptions({
           {`List ${data.title} deleted!`}
         </div>
       );
+      closeRef.current?.click();
     },
     onError: (error) => {
       toast(
@@ -66,7 +70,7 @@ export function ListOptions({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4 border-b">
           List actions
         </div>
-        <PopoverClose asChild>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             variant="ghost"
             className="w-auto h-auto p-2 absolute top-2 right-2 text-neutral-600"
