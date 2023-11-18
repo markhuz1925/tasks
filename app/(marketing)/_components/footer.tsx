@@ -1,4 +1,4 @@
-import Logo from "@/components/logo";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
