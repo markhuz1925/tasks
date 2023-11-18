@@ -8,6 +8,7 @@ import { AlertCircleIcon, CheckCircle2 } from "lucide-react";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
+import { ListOptions } from "./list-options";
 
 export function ListHeader({ data }: { data: List }) {
   const [title, setTitle] = useState(data.title);
@@ -91,6 +92,7 @@ export function ListHeader({ data }: { data: List }) {
           {title}
         </div>
       )}
+      <ListOptions onAddCard={() => {}} data={data} />
     </div>
   );
 }
