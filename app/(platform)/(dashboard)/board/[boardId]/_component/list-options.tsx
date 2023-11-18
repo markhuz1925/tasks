@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
+  AlertCircleIcon,
+  CheckCircle2,
   CopyIcon,
   MoreHorizontalIcon,
   PlusIcon,
@@ -17,6 +19,9 @@ import {
 } from "lucide-react";
 import { FormSubmit } from "@/components/form/form-submit";
 import { Separator } from "@/components/ui/separator";
+import { useAction } from "@/hooks/use-action";
+import { deleteList } from "@/actions/delete-list";
+import { toast } from "sonner";
 
 export function ListOptions({
   data,
@@ -25,6 +30,31 @@ export function ListOptions({
   data: List;
   onAddCard: () => void;
 }) {
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess: (data) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          {`List ${data.title} deleted!`}
+        </div>
+      );
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
+
+  const onDelete = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    executeDelete({ id, boardId });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -56,24 +86,26 @@ export function ListOptions({
         <form>
           <input hidden id="id" name="id" value={data.id} />
           <input hidden id="boardId" name="boardId" value={data.boardId} />
+          <FormSubmit
+            variant="ghost"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+          >
+            <CopyIcon className="w-4 h-4 mr-2" />
+            Copy List
+          </FormSubmit>
         </form>
-        <FormSubmit
-          variant="ghost"
-          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
-        >
-          <CopyIcon className="w-4 h-4 mr-2" />
-          Copy List
-        </FormSubmit>
         <Separator />
-        <Button
-          //onClick={onDelete}
-          //disabled={isLoading}
-          variant="ghost"
-          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-500"
-        >
-          <Trash2Icon className="w-4 h-4 mr-2" />
-          Delete this board
-        </Button>
+        <form action={onDelete}>
+          <input hidden id="id" name="id" value={data.id} />
+          <input hidden id="boardId" name="boardId" value={data.boardId} />
+          <FormSubmit
+            variant="ghost"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-500"
+          >
+            <Trash2Icon className="w-4 h-4 mr-2" />
+            Delete this board
+          </FormSubmit>
+        </form>
       </PopoverContent>
     </Popover>
   );
