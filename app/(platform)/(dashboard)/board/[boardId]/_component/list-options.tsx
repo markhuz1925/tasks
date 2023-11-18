@@ -1,13 +1,18 @@
 "use client";
 
-import { List } from "@prisma/client";
+import { copyList } from "@/actions/copy-list";
+import { deleteList } from "@/actions/delete-list";
+import { FormSubmit } from "@/components/form/form-submit";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { useAction } from "@/hooks/use-action";
+import { List } from "@prisma/client";
 import {
   AlertCircleIcon,
   CheckCircle2,
@@ -17,12 +22,8 @@ import {
   Trash2Icon,
   XIcon,
 } from "lucide-react";
-import { FormSubmit } from "@/components/form/form-submit";
-import { Separator } from "@/components/ui/separator";
-import { useAction } from "@/hooks/use-action";
-import { deleteList } from "@/actions/delete-list";
-import { toast } from "sonner";
 import { ElementRef, useRef } from "react";
+import { toast } from "sonner";
 
 export function ListOptions({
   data,
@@ -52,11 +53,37 @@ export function ListOptions({
     },
   });
 
+  const { execute: executeCopy } = useAction(copyList, {
+    onSuccess: (data) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          {`List ${data.title} copied!`}
+        </div>
+      );
+      closeRef.current?.click();
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
+
   const onDelete = (formData: FormData) => {
     const id = formData.get("id") as string;
     const boardId = formData.get("boardId") as string;
 
     executeDelete({ id, boardId });
+  };
+
+  const onCopy = (formData: FormData) => {
+    const id = formData.get("id") as string;
+    const boardId = formData.get("boardId") as string;
+
+    executeCopy({ id, boardId });
   };
 
   return (
@@ -87,7 +114,7 @@ export function ListOptions({
           <PlusIcon className="w-4 h-4 mr-2" />
           Add Card
         </Button>
-        <form>
+        <form action={onCopy}>
           <input hidden id="id" name="id" value={data.id} />
           <input hidden id="boardId" name="boardId" value={data.boardId} />
           <FormSubmit
