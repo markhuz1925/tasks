@@ -9,6 +9,7 @@ import { useAction } from "@/hooks/use-action";
 import { updateListOrder } from "@/actions/update-list-order";
 import { toast } from "sonner";
 import { AlertCircleIcon, CheckCircle2 } from "lucide-react";
+import { updateCardOrder } from "@/actions/update-card-order";
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
@@ -26,12 +27,33 @@ export function ListContainer({
   data: ListWithCards[];
 }) {
   const [orderedData, setOrderedData] = useState(data);
+
+  // Update list order
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast(
         <div className="flex items-center gap-x-2">
           <CheckCircle2 className="w-4 h-4 text-green-500" />
           List reordered!
+        </div>
+      );
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
+
+  // Update card order
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          Card reordered!
         </div>
       );
     },
@@ -105,7 +127,7 @@ export function ListContainer({
         sourceList.cards = reorderedCards;
 
         setOrderedData(newOrderedData);
-        // TODO: Trigger Server Action
+        executeUpdateCardOrder({ items: reorderedCards, boardId });
 
         // User moves a card from one list to another
       } else {
@@ -128,7 +150,7 @@ export function ListContainer({
         });
 
         setOrderedData(newOrderedData);
-        // TODO: Trigger Server Action
+        executeUpdateCardOrder({ items: destinationList.cards, boardId });
       }
     }
   };
