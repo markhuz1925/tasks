@@ -5,6 +5,10 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
 import { ListForm } from "./list-form";
 import { ListItem } from "./list-item";
+import { useAction } from "@/hooks/use-action";
+import { updateListOrder } from "@/actions/update-list-order";
+import { toast } from "sonner";
+import { AlertCircleIcon, CheckCircle2 } from "lucide-react";
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
@@ -22,6 +26,23 @@ export function ListContainer({
   data: ListWithCards[];
 }) {
   const [orderedData, setOrderedData] = useState(data);
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          List reordered!
+        </div>
+      );
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
 
   useEffect(() => {
     setOrderedData(data);
@@ -46,7 +67,7 @@ export function ListContainer({
       );
 
       setOrderedData(items);
-      // TODO: Trigger Server Action
+      executeUpdateListOrder({ items, boardId });
     }
 
     // User moves a card
