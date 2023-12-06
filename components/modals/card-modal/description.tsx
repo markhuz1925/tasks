@@ -29,6 +29,7 @@ export function Description({ data }: { data: CardWithList }) {
           {`Card "${data.title}" updated.`}
         </div>
       );
+      disableEditing();
     },
     onError: (error) => {
       toast(
