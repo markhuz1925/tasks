@@ -1,25 +1,56 @@
 "use client";
 
+import { updateCard } from "@/actions/update-card";
 import { FormInput } from "@/components/form/form-input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAction } from "@/hooks/use-action";
 import { CardWithList } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
-import { LayoutIcon } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2, LayoutIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { ElementRef, useRef, useState } from "react";
+import { toast } from "sonner";
 
 export function Header({ data }: { data: CardWithList }) {
   const [title, setTitle] = useState(data.title);
   const queryClient = useQueryClient();
   const params = useParams();
   const inputRef = useRef<ElementRef<"input">>(null);
+  const { execute } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["card", data.id] });
+      toast(
+        <div className="flex items-center gap-x-2">
+          <CheckCircle2 className="w-4 h-4 text-green-500" />
+          {`Renamed "${data.title}"`}
+        </div>
+      );
+      setTitle(data.title);
+    },
+    onError: (error) => {
+      toast(
+        <div className="flex items-center gap-x-2">
+          <AlertCircleIcon className="w-4 h-4 text-red-500" /> {error}
+        </div>
+      );
+    },
+  });
 
   const onBlur = () => {
     inputRef.current?.form?.requestSubmit();
   };
 
   const onSubmit = (formData: FormData) => {
-    console.log(formData.get("title"));
+    const title = formData.get("title") as string;
+    const boardId = params.boardId as string;
+
+    if (title === data.title) return;
+
+    execute({
+      title,
+      boardId,
+      id: data.id,
+    });
   };
 
   return (
