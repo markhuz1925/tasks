@@ -1,12 +1,13 @@
 "use client";
 
+import { Actions } from "@/components/modals/card-modal/actions";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCardModal } from "@/hooks/use-card-modal";
 import { fetcher } from "@/lib/fetcher";
 import { CardWithList } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { Header } from "./header";
 import { Description } from "./description";
+import { Header } from "./header";
 
 export function CardModal() {
   const id = useCardModal((state) => state.id);
@@ -31,6 +32,7 @@ export function CardModal() {
               )}
             </div>
           </div>
+          {!cardData ? <Actions.Skeleton /> : <Actions data={cardData} />}
         </div>
       </DialogContent>
     </Dialog>
